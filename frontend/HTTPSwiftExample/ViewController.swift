@@ -15,7 +15,7 @@
 //    ifconfig |grep inet   
 // to see what your public facing IP address is, the ip address can be used here
 //let SERVER_URL = "http://erics-macbook-pro.local:8000" // change this for your server name!!!
-let SERVER_URL = "http://10.0.1.6:8000" // change this for your server name!!!
+let SERVER_URL = "http://10.8.104.177:8000" // change this for your server name!!!
 
 import UIKit
 import CoreMotion
@@ -48,6 +48,11 @@ class ViewController: UIViewController, URLSessionDelegate {
     
     var isWaitingForMotionData = false
     
+   
+    @IBAction func DSIDInput(_ sender: UIStepper) {
+        print(Int(sender.value))
+        self.dsid = Int(sender.value)
+    }
     @IBOutlet weak var dsidLabel: UILabel!
     @IBOutlet weak var upArrow: UILabel!
     @IBOutlet weak var rightArrow: UILabel!
@@ -320,9 +325,9 @@ class ViewController: UIViewController, URLSessionDelegate {
                 }
                 else{
                     let jsonDictionary = self.convertDataToDictionary(with: data)
-                    
-                    print(jsonDictionary["feature"]!)
-                    print(jsonDictionary["label"]!)
+//                    
+//                    print(jsonDictionary["feature"]!)
+//                    print(jsonDictionary["label"]!)
                 }
 
         })
