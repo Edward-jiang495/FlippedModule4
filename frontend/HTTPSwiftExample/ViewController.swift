@@ -15,7 +15,7 @@
 //    ifconfig |grep inet   
 // to see what your public facing IP address is, the ip address can be used here
 //let SERVER_URL = "http://erics-macbook-pro.local:8000" // change this for your server name!!!
-let SERVER_URL = "http://10.8.104.177:8000" // change this for your server name!!!
+let SERVER_URL = "http://10.8.27.223:8000" // change this for your server name!!!
 
 import UIKit
 import CoreMotion
@@ -273,7 +273,7 @@ class ViewController: UIViewController, URLSessionDelegate {
         let dataTask : URLSessionDataTask = self.session.dataTask(with: request,
             completionHandler:{(data, response, error) in
                 if(error != nil){
-                    print("Response:\n%@",response!)
+//                    print("Response:\n%@",response!)
                 }
                 else{
                     let jsonDictionary = self.convertDataToDictionary(with: data)
