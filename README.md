@@ -1,5 +1,13 @@
 # FlippedModule4
 
+## Part 1
+
+![](images/Part1.png)
+
+## Part 2
+
+-- insert video --
+
 ## Questions for Thought
 
 > 1. Is the current method of saving the classifier blocking to the tornado IOLoop? Justify your response.
