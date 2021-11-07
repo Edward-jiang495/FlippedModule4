@@ -2,6 +2,9 @@
 __pycache__
 .DS_store
 
+models/
+
+backend/data
 
 # Created by https://www.toptal.com/developers/gitignore/api/swift,python,xcode,objective-c
 # Edit at https://www.toptal.com/developers/gitignore?templates=swift,python,xcode,objective-c
