@@ -6,7 +6,7 @@
 
 ## Part 2
 
--- insert video --
+[Demo video on YouTube](https://youtu.be/D3CVaN5fYnA)
 
 ## Questions for Thought
 
