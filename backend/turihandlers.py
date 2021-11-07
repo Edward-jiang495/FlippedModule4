@@ -104,11 +104,17 @@ class PredictOneFromDatasetId(BaseHandler):
 
         # load the model from the database (using pickle)
         # we are blocking tornado!! no!!
-        if(self.clf == {}):
-            print('Loading Model From file')
-            self.clf[dsid] = tc.load_model('../models/turi_model_dsid%d'%(dsid))
-  
 
+        if dsid not in self.clf.keys():
+            print('Loading Model From file')
+
+            try:
+                self.clf[dsid] = tc.load_model('../models/turi_model_dsid%d'%(dsid))
+            except:
+                print(f'No model found for DSID {dsid}')
+                self.write_json({"prediction":"none"})
+                return
+        
         predLabel = self.clf[dsid].predict(fvals);
         self.write_json({"prediction":str(predLabel)})
 
