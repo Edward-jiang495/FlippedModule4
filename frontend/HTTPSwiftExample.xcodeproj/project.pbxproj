@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		AB1DE484274090B000748392 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB1DE483274090B000748392 /* Main.storyboard */; };
 		AB1DE486274090B900748392 /* VideoAnalgesic.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1DE485274090B900748392 /* VideoAnalgesic.swift */; };
-		AB1DE488274090BF00748392 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1DE487274090BF00748392 /* HomeViewController.swift */; };
 		AB1DE48A274090C500748392 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1DE489274090C500748392 /* CameraViewController.swift */; };
+		AB1DE48C2741D3FD00748392 /* PredictDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1DE48B2741D3FD00748392 /* PredictDataViewController.swift */; };
 		B67483DB1ACA2D6800A9970E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67483DA1ACA2D6800A9970E /* AppDelegate.swift */; };
 		B67483DD1ACA2D6800A9970E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67483DC1ACA2D6800A9970E /* ViewController.swift */; };
 		B67483E21ACA2D6800A9970E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B67483E11ACA2D6800A9970E /* Images.xcassets */; };
@@ -21,8 +21,8 @@
 /* Begin PBXFileReference section */
 		AB1DE483274090B000748392 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		AB1DE485274090B900748392 /* VideoAnalgesic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoAnalgesic.swift; sourceTree = "<group>"; };
-		AB1DE487274090BF00748392 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		AB1DE489274090C500748392 /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
+		AB1DE48B2741D3FD00748392 /* PredictDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictDataViewController.swift; sourceTree = "<group>"; };
 		B67483D51ACA2D6800A9970E /* HTTPSwiftExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HTTPSwiftExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B67483D91ACA2D6800A9970E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B67483DA1ACA2D6800A9970E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -68,7 +68,7 @@
 				AB1DE485274090B900748392 /* VideoAnalgesic.swift */,
 				AB1DE489274090C500748392 /* CameraViewController.swift */,
 				AB1DE483274090B000748392 /* Main.storyboard */,
-				AB1DE487274090BF00748392 /* HomeViewController.swift */,
+				AB1DE48B2741D3FD00748392 /* PredictDataViewController.swift */,
 				B67483E11ACA2D6800A9970E /* Images.xcassets */,
 				B67483E31ACA2D6800A9970E /* LaunchScreen.xib */,
 				B67483D81ACA2D6800A9970E /* Supporting Files */,
@@ -157,7 +157,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AB1DE488274090BF00748392 /* HomeViewController.swift in Sources */,
+				AB1DE48C2741D3FD00748392 /* PredictDataViewController.swift in Sources */,
 				B67483DD1ACA2D6800A9970E /* ViewController.swift in Sources */,
 				AB1DE486274090B900748392 /* VideoAnalgesic.swift in Sources */,
 				B67483DB1ACA2D6800A9970E /* AppDelegate.swift in Sources */,
