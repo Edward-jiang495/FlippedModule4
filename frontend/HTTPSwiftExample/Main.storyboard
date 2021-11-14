@@ -52,19 +52,35 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JJY-j0-SYx">
-                                <rect key="frame" x="16" y="539" width="175" height="90"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="X7V-Qj-FJN">
+                                <rect key="frame" x="67" y="109" width="240" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qBa-0x-Gkz">
+                                <rect key="frame" x="140" y="337" width="96" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="toggle camera"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Take photo"/>
                                 <connections>
-                                    <action selector="toggleCamera:" destination="O34-jb-Zuk" eventType="touchUpInside" id="qyO-RF-fXv"/>
+                                    <action selector="takePhoto:" destination="O34-jb-Zuk" eventType="touchUpInside" id="Q1t-tC-l7n"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WWk-Zh-bU0">
+                                <rect key="frame" x="129" y="437" width="117" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="send to server"/>
+                                <connections>
+                                    <action selector="sendToServer:" destination="O34-jb-Zuk" eventType="touchUpInside" id="PLY-pk-vu4"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="O5X-13-D6R"/>
+                    <connections>
+                        <outlet property="imageView" destination="X7V-Qj-FJN" id="7k1-fr-4kN"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="STK-Iz-3Gw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -73,7 +89,6 @@
         <!--Navigation Controller-->
         <scene sceneID="2xH-68-khP">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="kb8-rg-rJR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <navigationController id="qGG-Z2-VEO" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="6SO-dK-d8U">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -83,6 +98,7 @@
                         <segue destination="vXZ-lx-hvc" kind="relationship" relationship="rootViewController" id="Dbf-Gl-dWC"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kb8-rg-rJR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="102" y="791"/>
         </scene>
