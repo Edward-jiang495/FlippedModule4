@@ -9,7 +9,7 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
     lazy var session: URLSession = {
         let sessionConfig = URLSessionConfiguration.ephemeral
         
-        sessionConfig.timeoutIntervalForRequest = 5.0
+        sessionConfig.timeoutIntervalForRequest = 600.0
         sessionConfig.timeoutIntervalForResource = 8.0
         sessionConfig.httpMaximumConnectionsPerHost = 1
         

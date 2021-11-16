@@ -2,7 +2,7 @@ import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
 
-from MLService import *
+from backend.MLService import *
 
 # model parameters
 batch_size = 32

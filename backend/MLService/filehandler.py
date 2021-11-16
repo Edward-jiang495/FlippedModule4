@@ -24,7 +24,7 @@ def save_example_image(img_str,dir,hot_dog):
     if not hot_dog:
         hot_dog_path = "not_hot_dog"
 
-    filename = datetime.now().strftime('%m_%d_%Y-%H:%M:%S') + '.jpg'
+    filename = datetime.now().strftime('%m_%d_%Y-%H_%M_%S') + '.jpg'
     path = f'{dir}/{hot_dog_path}/{filename}'
     
     with open(path, 'wb') as f:
@@ -34,7 +34,7 @@ def save_example_image(img_str,dir,hot_dog):
 
 def temp_save_image(img_str):
     imgdata = base64.b64decode(img_str)
-    filename = datetime.now().strftime('%m_%d_%Y-%H:%M:%S') + '.jpg'
+    filename = datetime.now().strftime('%m_%d_%Y-%H_%M_%S') + '.jpg'
     with open(filename, 'wb') as f:
             f.write(imgdata)
 
