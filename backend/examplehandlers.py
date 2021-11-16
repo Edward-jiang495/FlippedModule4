@@ -177,14 +177,16 @@ class TrainCNN(BaseHandler):
         # Load Model
         model = get_model(ModelType.USER, PretrainType.INCEPTION_RESNET_V2)
 
+        self.write_json({"status":"ok"})
+
         # Train model
-        train_user_model(model,PretrainType.INCEPTION_RESNET_V2,
+        history = train_user_model(model,PretrainType.INCEPTION_RESNET_V2,
                         image_dirs[ModelType.USER][PretrainType.INCEPTION_RESNET_V2],epochs)
 
         # clear directory
         clear_image_dir(image_dirs[ModelType.USER][PretrainType.INCEPTION_RESNET_V2])
 
-        self.write_json({"status":"ok"})
+        self.write_json({"status":"ok","val_acc":history.history['val_acc'][-1]})
         
 
 class TrainMLP(BaseHandler):
@@ -197,13 +199,14 @@ class TrainMLP(BaseHandler):
         model = get_model(ModelType.USER, PretrainType.XCEPTION)
 
         # Train model
-        train_user_model(model,PretrainType.XCEPTION,
+        history = train_user_model(model,PretrainType.XCEPTION,
                         image_dirs[ModelType.USER][PretrainType.XCEPTION],epochs)
 
         # clear directory
         clear_image_dir(image_dirs[ModelType.USER][PretrainType.XCEPTION])
 
-        self.write_json({"status":"ok"})
+        self.write_json({"status":"ok","val_acc":history.history['val_acc'][-1]})
+
         
 
 class UploadCNNData(BaseHandler):

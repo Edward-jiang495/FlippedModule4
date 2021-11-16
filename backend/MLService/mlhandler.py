@@ -2,7 +2,7 @@ import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
 
-from backend.MLService import *
+from MLService import *
 
 # model parameters
 batch_size = 32
@@ -26,7 +26,9 @@ def get_dataset_from_dir(images_dir: path) -> tf.data.Dataset:
                                                           shuffle=True,
                                                           crop_to_aspect_ratio=False)
 
+    print("before call")
     if class_names is None:
+        print("inside")
         class_names = ds.class_names
 
     return ds
