@@ -6,8 +6,8 @@ from backend.MLService import *
 
 # model parameters
 batch_size = 32
-img_height = 75
-img_width = 75
+img_height = 128
+img_width = 128
 optimizer = keras.optimizers.Adam(learning_rate=0.0001)
 num_classes = 2
 
@@ -75,18 +75,22 @@ def make_pretrainable_model(pretrain_type: PretrainType) -> keras.Model:
 
 
 def save_model(model: keras.Model, directory: path) -> None:
+    model_json = model.to_json()
+    with open(path.join(directory, "model.json"), "w") as json_file:
+        json_file.write(model_json)
 
-
-
-    model.save(directory, overwrite=True, include_optimizer=True, save_format="tf")
+    model.save_weights(path.join(directory, "weights.h5"))
 
 
 def load_model(directory: path) -> keras.Model:
-    try:
-        model = keras.models.load_model(directory, compile=True)
-        return model
-    except (IOError, ImportError):
+    if not path.exists(path.join(directory, "model.json")) or not path.exists(path.join(directory, "weights.h5")):
+        print(f"Model not found in {directory}")
         return None
+    else:
+        with open(path.join(directory, "model.json"), "r") as json_file:
+            model = keras.models.model_from_json(json_file.read())
+            model.load_weights(path.join(directory, "weights.h5"))
+            return model
 
 
 def get_base_model(pretrain_type: PretrainType) -> keras.Model:
@@ -161,7 +165,7 @@ def __main__():
     model = get_model(ModelType.USER, PretrainType.INCEPTION_RESNET_V2)
     # train_model(model, image_dirs[ModelType.USER]['train'])
 
-    print(get_prediction(model, path.join(image_dirs[ModelType.BASE]['train'], 'hot_dog', '133012.jpg')))
+    print(get_prediction(model, path.join(image_dirs[ModelType.BASE]['train'], 'hot_dog', '2417.jpg')))
 
 
 if __name__ == '__main__':
