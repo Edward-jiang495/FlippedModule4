@@ -15,15 +15,21 @@ compile_options = {
     "loss": keras.losses.BinaryCrossentropy(from_logits=True),
     "metrics": [keras.metrics.BinaryAccuracy()],
 }
+class_names = None
 
 
 def get_dataset_from_dir(images_dir: path) -> tf.data.Dataset:
-    return keras.preprocessing.image_dataset_from_directory(images_dir,
-                                                            label_mode="binary",
-                                                            image_size=(img_height, img_width),
-                                                            batch_size=batch_size,
-                                                            shuffle=True,
-                                                            crop_to_aspect_ratio=False)
+    ds = keras.preprocessing.image_dataset_from_directory(images_dir,
+                                                          label_mode="binary",
+                                                          image_size=(img_height, img_width),
+                                                          batch_size=batch_size,
+                                                          shuffle=True,
+                                                          crop_to_aspect_ratio=False)
+
+    if class_names is None:
+        class_names = ds.class_names
+
+    return ds
 
 
 def get_dataset_from_types(model_type: ModelType, pretrain_type: PretrainType) -> tuple:
@@ -71,7 +77,7 @@ def make_pretrainable_model(pretrain_type: PretrainType) -> keras.Model:
         # transfer learning
         pretrained_model,
         layers.Flatten(),
-        layers.Dense(1),
+        layers.Dense(num_classes),
     ])
 
     model.compile(**compile_options)
@@ -164,8 +170,8 @@ def get_prediction(model: keras.Model, image_path: path) -> float:
     img_array = tf.expand_dims(img_array, 0)
 
     predictions = model.predict(img_array)
-    print(predictions)
-    return predictions[0]
+    score = tf.nn.softmax(predictions[0])
+    return class_names[np.argmax(score)]
 
 
 def __main__():
