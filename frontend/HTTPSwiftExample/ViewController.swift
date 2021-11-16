@@ -1,5 +1,5 @@
 //let SERVER_URL = "http://10.8.27.223:8000" // change this for your server name!!!
-let SERVER_URL = "http://10.8.106.203:8000"
+let SERVER_URL = "http://192.168.1.66:8000"
 
 import UIKit
 import CoreMotion
@@ -66,10 +66,10 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
         let base64EncondedImage = convertImageToBase64(image: info[.originalImage] as! UIImage)
         if(imagePicker.title == "notHotDog"){
             print("Sending negative train data example.")
-            sendTrainData(image: base64EncondedImage, target: "false");
+            sendTrainData(image: base64EncondedImage, target: false);
         }else if(imagePicker.title == "hotDog"){
             print("Sending positive train data example.")
-            sendTrainData(image: base64EncondedImage, target: "true");
+            sendTrainData(image: base64EncondedImage, target: true);
         }else if(imagePicker.title == "predict"){
             print("Predicting image.")
             getPrediction(image: base64EncondedImage)
@@ -94,7 +94,7 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
     }
     
     //MARK: API calls
-    func sendTrainData(image: String,target: String){
+    func sendTrainData(image: String,target: Bool){
         var model = "CNN";
         if mlState.selectedSegmentIndex == 0{
             model = "MLP";
