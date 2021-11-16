@@ -5,23 +5,6 @@ import CoreMotion
 
 class ViewController: UIViewController, URLSessionDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        //view did load
-        //bolding selected ml label
-        if(toggleState.isOn){
-            mlpLabel.font = UIFont.boldSystemFont(ofSize: 24.0)
-            cnnLabel.font = UIFont.boldSystemFont(ofSize: 16.0)
-
-        }
-        else{
-            mlpLabel.font = UIFont.boldSystemFont(ofSize: 16.0)
-            cnnLabel.font = UIFont.boldSystemFont(ofSize: 24.0)
-
-        }
-    }
-    
-    // MARK: Class Properties
     lazy var session: URLSession = {
         let sessionConfig = URLSessionConfiguration.ephemeral
         
@@ -34,150 +17,194 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
             delegateQueue:self.operationQueue)
     }()
     
+    @IBOutlet weak var epochSlider: UISlider!
     let operationQueue = OperationQueue()
+    var isHotdog:Bool = true;
     
-    @IBOutlet weak var mlpLabel: UILabel!
-    //mlp label
-    
-    @IBOutlet weak var cnnLabel: UILabel!
-    //cnn label
-    
-    @IBOutlet weak var hotdog: UILabel!
-    
-    @IBOutlet weak var imageView: UIImageView!
-    //image view
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
     
     var imagePicker: UIImagePickerController!
     
-
+    @IBOutlet weak var mlState: UISegmentedControl!
     
-    @IBOutlet weak var toggleState: UISwitch!
-    //outlet for switch
+    @IBOutlet weak var resultText: UILabel!
     
-    @IBAction func toggleML(_ sender: UISwitch) {
-        //bolding the text based on selection
-        
-        if(sender.isOn){
-            mlpLabel.font = UIFont.boldSystemFont(ofSize: 24.0)
-            cnnLabel.font = UIFont.boldSystemFont(ofSize: 16.0)
-
-            print("ON")
-
-        }
-        else{
-            mlpLabel.font = UIFont.boldSystemFont(ofSize: 16.0)
-            cnnLabel.font = UIFont.boldSystemFont(ofSize: 24.0)
-
-            print("OFF")
-
-        }
+    @IBOutlet weak var imageView: UIImageView!
+    
+    @IBOutlet weak var epoch: UILabel!
+    
+    @IBAction func epochSlider(_ sender: UISlider) {
+        //sliders to change epoch value
+        let currentValue = Int(sender.value)
+        epoch.text = "\(currentValue)"
     }
     
     
-    
-    @IBAction func takePhoto(_ sender: UIButton) {
-        //function to take a photo
-        
-         imagePicker =  UIImagePickerController()
-         imagePicker.delegate = self
-         imagePicker.sourceType = .camera
+    @IBAction func hotdog(_ sender: UIButton) {
+        imagePicker =  UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = .camera
 
-         present(imagePicker, animated: true, completion: nil)
+        isHotdog = true
+        present(imagePicker, animated: true, completion: nil)
+
+
+    }
+    
+    
+    @IBAction func notHotdog(_ sender: UIButton) {
+        imagePicker =  UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = .camera
+        isHotdog = false
+        present(imagePicker, animated: true, completion: nil)
         
+
+
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
             imagePicker.dismiss(animated: true, completion: nil)
             imageView.image = info[.originalImage] as? UIImage
-        //delegate
+            if mlState.selectedSegmentIndex == 0 {
+                print("MLP sent")
+//                if isHotdog{
+//
+//                }
+//                else{
+//
+//                }
+//                sendFeatures(image: ciImage!)
+            }
+            else if mlState.selectedSegmentIndex == 1 {
+                print("CNN sent ")
+//                if isHotdog{
+//
+//                }
+//                else{
+//
+//                }
+//                sendFeatures(image: ciImage!)
+            }
+            else{
+                print("ERROR")
+            }
         }
     
-    
-    @IBAction func hotdogPressed(_ sender: UIButton) {
-        //is a hotdog pressed
-        if toggleState.isOn{
-            print("ON")
-//            do mlp stuff
-        }
-        else{
-            print("ON")
-            //do cnn stuff
-
-            
-        }
-    }
-    
-    
-    @IBAction func notHotdogPressed(_ sender: UIButton) {
-        //not a hotdog pressed
-        if toggleState.isOn{
-            print("ON")
-            //do mlp stuff
-            
-        }
-        else{
-            print("ON")
-            //do cnn stuff
-
-            
-        }
-    }
     
     @IBAction func reset(_ sender: UIButton) {
-        //reset stuff
-        
+        //reset model
+        if mlState.selectedSegmentIndex == 0 {
+            print("MLP")
+        }
+        else if mlState.selectedSegmentIndex == 1 {
+            print("CNN")
+        }
+        else{
+            print("ERROR")
+        }
     }
     
     
     @IBAction func predict(_ sender: UIButton) {
-//        predict stuff
-        var image = imageView.image;
-        //do something with the image
-        var results = toggleState.isOn;
-        if(results){
-            hotdog.text = "Hotdog"
+        //predict based on pics
+        if(imageView.image != nil){
+            let image:UIImage = imageView.image!
+            let imageData = image.jpegData(compressionQuality: 1)
+            let imageBase64String = imageData?.base64EncodedString()
+            print(imageBase64String ?? "Could not encode image to Base64")
+
+            getPrediction(image: imageBase64String!)
+            
+//            if mlState.selectedSegmentIndex == 0 {
+//                print("MLP")
+//
+////                getPrediction(image: ciImage!)
+//            }
+//            else if mlState.selectedSegmentIndex == 1 {
+//                print("CNN")
+////                getPrediction(image: ciImage!)
+//            }
+//            else{
+//                print("ERROR")
+//            }
         }
         else{
-            hotdog.text = "Not a hotdog"
+            self.showResult(result: "Input image cannot be empty")
         }
     }
     
-    func displayLabelResponse(_ response:String){
-        switch response {
-        case "['up']":
-            blinkLabel(upArrow)
-            break
-        case "['down']":
-            blinkLabel(downArrow)
-            break
-        case "['left']":
-            blinkLabel(leftArrow)
-            break
-        case "['right']":
-            blinkLabel(rightArrow)
-            break
-        default:
-            print("Unknown")
-            break
-        }
+    @IBAction func train(_ sender: UIButton) {
+        //train with given pics
+        trainModel()
+//        if mlState.selectedSegmentIndex == 0 {
+//            print("MLP")
+//            trainModel()
+//
+////               train func
+//        }
+//        else if mlState.selectedSegmentIndex == 1 {
+//            print("CNN")
+////            var ciImage = CIImage(image: imageView.image!)
+////                train func
+//        }
+//        else{
+//            print("ERROR")
+//        }
+//
+
+
     }
     
-    func blinkLabel(_ label:UILabel){
-        DispatchQueue.main.async {
-            self.setAsCalibrating(label)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
-                self.setAsNormal(label)
-            })
-        }
-        
-    }
-    
-    func getPrediction(_ image:[Double]){
+    //MARK: API calls
+    func sendFeatures(image: String){
         var model = "CNN";
-        if(toggleState.isOn){
-            model = "MLP";
+        if mlState.selectedSegmentIndex == 0{
+            model = "CNN";
         }
-        let baseURL = "\(SERVER_URL)/\(model)/PredictOne";
+        let baseURL = "\(SERVER_URL)/\(model)/AddImage";
+      
+        let postUrl = URL(string: "\(baseURL)")
+        
+        // create a custom HTTP POST request
+        var request = URLRequest(url: postUrl!)
+        
+        // data to send in body of post request (send arguments as json)
+        let jsonUpload:NSDictionary = ["image":image]
+        
+        
+        let requestBody:Data? = self.convertDictionaryToData(with:jsonUpload)
+        
+        request.httpMethod = "POST"
+        request.httpBody = requestBody
+        
+        let postTask : URLSessionDataTask = self.session.dataTask(with: request,
+            completionHandler:{(data, response, error) in
+                if(error != nil){
+                    if let res = response{
+                        print("Response:\n",res)
+                    }
+                }
+                else{
+                    let jsonDictionary = self.convertDataToDictionary(with: data)
+//
+//                    print(jsonDictionary["feature"]!)
+//                    print(jsonDictionary["label"]!)
+                }
+
+        })
+        
+        postTask.resume() // start the task
+    }
+    
+    func getPrediction(image:String){
+        var model = "CNN";
+        if mlState.selectedSegmentIndex == 0{
+            model = "CNN";
+        }
+        let baseURL = "\(SERVER_URL)/\(model)/AddImage";
         let postUrl = URL(string: "\(baseURL)")
         
         // create a custom HTTP POST request
@@ -205,13 +232,98 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
                             
                             let labelResponse = jsonDictionary["prediction"]!
                             print(labelResponse)
-                            self.displayLabelResponse(labelResponse as! String)
+                            self.showResult(result: labelResponse as! String)
 
                         }
                                                                     
         })
         
         postTask.resume() // start the task
+    }
+    
+    func resetModel(){
+        var model = "CNN";
+        if mlState.selectedSegmentIndex == 0{
+            model = "CNN";
+        }
+        let baseURL = "\(SERVER_URL)/\(model)/reset";
+        let postUrl = URL(string: "\(baseURL)")
+        
+        // create a custom HTTP POST request
+        var request = URLRequest(url: postUrl!)
+        
+        // data to send in body of post request (send arguments as json)
+        let jsonUpload:NSDictionary = [:]
+        
+        
+        let requestBody:Data? = self.convertDictionaryToData(with:jsonUpload)
+        
+        request.httpMethod = "POST"
+        request.httpBody = requestBody
+        
+        let postTask : URLSessionDataTask = self.session.dataTask(with: request,
+                                                                  completionHandler:{
+                        (data, response, error) in
+                        if(error != nil){
+                            if let res = response{
+                                print("Response:\n",res)
+                            }
+                        }
+                        else{ // no error we are aware of
+                            let jsonDictionary = self.convertDataToDictionary(with: data)
+                           
+
+                        }
+                                                                    
+        })
+        
+        postTask.resume() // start the task
+    }
+    
+    func trainModel(){
+        var model = "CNN";
+        if mlState.selectedSegmentIndex == 0{
+            model = "CNN";
+        }
+        let baseURL = "\(SERVER_URL)/\(model)/train";
+        let postUrl = URL(string: "\(baseURL)")
+        
+        // create a custom HTTP POST request
+        var request = URLRequest(url: postUrl!)
+        
+        // data to send in body of post request (send arguments as json)
+        let jsonUpload:NSDictionary = ["epochs":Int(epochSlider.value)]
+        
+        
+        let requestBody:Data? = self.convertDictionaryToData(with:jsonUpload)
+        
+        request.httpMethod = "POST"
+        request.httpBody = requestBody
+        
+        let postTask : URLSessionDataTask = self.session.dataTask(with: request,
+                                                                  completionHandler:{
+                        (data, response, error) in
+                        if(error != nil){
+                            if let res = response{
+                                print("Response:\n",res)
+                            }
+                        }
+                        else{ // no error we are aware of
+                            let jsonDictionary = self.convertDataToDictionary(with: data)
+                            
+
+                        }
+                                                                    
+        })
+        
+        postTask.resume() // start the task
+    }
+    
+    func showResult(result:String){
+        DispatchQueue.main.async {
+            self.resultText.text = result
+        }
+        
     }
     
     //MARK: JSON Conversion Functions
@@ -244,11 +356,4 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
         }
     }
     
-
 }
-
-
-
-
-
-
