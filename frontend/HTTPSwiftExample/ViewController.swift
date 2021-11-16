@@ -60,6 +60,11 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
             imagePicker.dismiss(animated: true, completion: nil)
             imageView.image = info[.originalImage] as? UIImage
+            let image = imageView.image!
+            let imageData = image.pngData()!
+            let str64 = imageData.base64EncodedString(options: Data.Base64EncodingOptions.lineLength64Characters)
+            print(str64)
+            
             if mlState.selectedSegmentIndex == 0 {
                 print("MLP sent")
                 if imagePicker.title=="hotdog"{
