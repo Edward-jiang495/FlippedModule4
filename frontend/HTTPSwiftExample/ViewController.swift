@@ -42,124 +42,54 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
     }
     
     
+    //MARK: Button actions that open camera
     @IBAction func hotdog(_ sender: UIButton) {
-        imagePicker =  UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = .camera
-
-        isHotdog = true
-        present(imagePicker, animated: true, completion: nil)
-
+        openCamera(title: "hotDog")
+    }
+    
+    @IBAction func notHotdog(_ sender: UIButton) {
+        openCamera(title: "notHotDog")
 
     }
     
-    
-    @IBAction func notHotdog(_ sender: UIButton) {
-        imagePicker =  UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = .camera
-        isHotdog = false
-        present(imagePicker, animated: true, completion: nil)
-        
-
-
+    @IBAction func predict(_ sender: UIButton) {
+        //predict based on pics
+        openCamera(title: "predict")
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-            imagePicker.dismiss(animated: true, completion: nil)
-            imageView.image = info[.originalImage] as? UIImage
-            if mlState.selectedSegmentIndex == 0 {
-                print("MLP sent")
-//                if isHotdog{
-//
-//                }
-//                else{
-//
-//                }
-//                sendFeatures(image: ciImage!)
-            }
-            else if mlState.selectedSegmentIndex == 1 {
-                print("CNN sent ")
-//                if isHotdog{
-//
-//                }
-//                else{
-//
-//                }
-//                sendFeatures(image: ciImage!)
-            }
-            else{
-                print("ERROR")
-            }
+            
+        imagePicker.dismiss(animated: true, completion: nil)
+        imageView.image = info[.originalImage] as? UIImage
+        let base64EncondedImage = convertImageToBase64(image: info[.originalImage] as! UIImage)
+        if(imagePicker.title == "notHotDog"){
+            sendTrainData(image: base64EncondedImage, target: "false");
+        }else if(imagePicker.title == "hotDog"){
+            sendTrainData(image: base64EncondedImage, target: "true");
+        }else if(imagePicker.title == "predict"){
+            getPrediction(image: base64EncondedImage)
+        }else{
+            print("No valid action for image.")
         }
+    }
     
     
     @IBAction func reset(_ sender: UIButton) {
         //reset model
-        if mlState.selectedSegmentIndex == 0 {
-            print("MLP")
-        }
-        else if mlState.selectedSegmentIndex == 1 {
-            print("CNN")
-        }
-        else{
-            print("ERROR")
-        }
+        resetModel()
     }
     
     
-    @IBAction func predict(_ sender: UIButton) {
-        //predict based on pics
-        if(imageView.image != nil){
-            let image:UIImage = imageView.image!
-            let imageData = image.jpegData(compressionQuality: 1)
-            let imageBase64String = imageData?.base64EncodedString()
-            print(imageBase64String ?? "Could not encode image to Base64")
 
-            getPrediction(image: imageBase64String!)
-            
-//            if mlState.selectedSegmentIndex == 0 {
-//                print("MLP")
-//
-////                getPrediction(image: ciImage!)
-//            }
-//            else if mlState.selectedSegmentIndex == 1 {
-//                print("CNN")
-////                getPrediction(image: ciImage!)
-//            }
-//            else{
-//                print("ERROR")
-//            }
-        }
-        else{
-            self.showResult(result: "Input image cannot be empty")
-        }
-    }
     
     @IBAction func train(_ sender: UIButton) {
-        //train with given pics
+        //train with previously uploaded pics
         trainModel()
-//        if mlState.selectedSegmentIndex == 0 {
-//            print("MLP")
-//            trainModel()
-//
-////               train func
-//        }
-//        else if mlState.selectedSegmentIndex == 1 {
-//            print("CNN")
-////            var ciImage = CIImage(image: imageView.image!)
-////                train func
-//        }
-//        else{
-//            print("ERROR")
-//        }
-//
-
 
     }
     
     //MARK: API calls
-    func sendFeatures(image: String){
+    func sendTrainData(image: String,target: String){
         var model = "CNN";
         if mlState.selectedSegmentIndex == 0{
             model = "CNN";
@@ -172,7 +102,7 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
         var request = URLRequest(url: postUrl!)
         
         // data to send in body of post request (send arguments as json)
-        let jsonUpload:NSDictionary = ["image":image]
+        let jsonUpload:NSDictionary = ["image":image,"target":target]
         
         
         let requestBody:Data? = self.convertDictionaryToData(with:jsonUpload)
@@ -324,6 +254,31 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
             self.resultText.text = result
         }
         
+    }
+    
+    //MARK: Open camera
+    
+    func openCamera(title:String){
+        imagePicker =  UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.title = title
+        imagePicker.sourceType = .camera
+        
+        present(imagePicker, animated: true, completion: nil)
+    }
+    
+    //MARK: Image Conversion to Base64
+    
+    func convertImageToBase64(image:UIImage) -> String{
+        let imageData = image.jpegData(compressionQuality: 1)
+        
+        if let imageBase64String = imageData?.base64EncodedString(){
+            return imageBase64String
+        }else{
+            print("Could not encode image to Base64")
+        }
+        
+        return "";
     }
     
     //MARK: JSON Conversion Functions
