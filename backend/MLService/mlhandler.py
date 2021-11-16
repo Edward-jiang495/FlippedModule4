@@ -15,7 +15,7 @@ compile_options = {
     "loss": keras.losses.BinaryCrossentropy(from_logits=True),
     "metrics": [keras.metrics.BinaryAccuracy()],
 }
-class_names = None
+global class_names
 
 
 def get_dataset_from_dir(images_dir: path) -> tf.data.Dataset:
@@ -26,8 +26,8 @@ def get_dataset_from_dir(images_dir: path) -> tf.data.Dataset:
                                                           shuffle=True,
                                                           crop_to_aspect_ratio=False)
 
-    if class_names is None:
-        class_names = ds.class_names
+    global class_names
+    class_names = ds.class_names
 
     return ds
 
