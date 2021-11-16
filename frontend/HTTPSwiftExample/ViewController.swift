@@ -24,6 +24,7 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        epoch.text = "\(Int(epochSlider.value)) epochs";
     }
     
     var imagePicker: UIImagePickerController!
@@ -39,7 +40,7 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
     @IBAction func epochSlider(_ sender: UISlider) {
         //sliders to change epoch value
         let currentValue = Int(sender.value)
-        epoch.text = "\(currentValue)"
+        epoch.text = "\(currentValue) epochs"
     }
     
     
@@ -273,6 +274,10 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
     
     //MARK: Image Conversion to Base64
     
+    //I used the links below to learn how to convert an image to base64
+    //https://developer.apple.com/forums/thread/110240
+    //https://www.appsdeveloperblog.com/uiimage-base64-encoding-and-decoding-in-swift/
+    //https://stackoverflow.com/questions/11251340/convert-between-uiimage-and-base64-string
     func convertImageToBase64(image:UIImage) -> String{
         let imageData = image.jpegData(compressionQuality: 1)
         

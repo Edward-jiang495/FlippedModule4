@@ -99,7 +99,6 @@ class ResetCNN(BaseHandler):
         self.write_json({"status":"ok"})
         #train base model
 
-
 class ResetMLP(BaseHandler):
     def post(self):
         print("Resetting MLP")
