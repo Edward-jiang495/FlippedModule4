@@ -21,6 +21,21 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
         }
     }
     
+    // MARK: Class Properties
+    lazy var session: URLSession = {
+        let sessionConfig = URLSessionConfiguration.ephemeral
+        
+        sessionConfig.timeoutIntervalForRequest = 5.0
+        sessionConfig.timeoutIntervalForResource = 8.0
+        sessionConfig.httpMaximumConnectionsPerHost = 1
+        
+        return URLSession(configuration: sessionConfig,
+            delegate: self,
+            delegateQueue:self.operationQueue)
+    }()
+    
+    let operationQueue = OperationQueue()
+    
     @IBOutlet weak var mlpLabel: UILabel!
     //mlp label
     
@@ -98,6 +113,7 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
         if toggleState.isOn{
             print("ON")
             //do mlp stuff
+            
         }
         else{
             print("ON")
@@ -123,6 +139,108 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
         }
         else{
             hotdog.text = "Not a hotdog"
+        }
+    }
+    
+    func displayLabelResponse(_ response:String){
+        switch response {
+        case "['up']":
+            blinkLabel(upArrow)
+            break
+        case "['down']":
+            blinkLabel(downArrow)
+            break
+        case "['left']":
+            blinkLabel(leftArrow)
+            break
+        case "['right']":
+            blinkLabel(rightArrow)
+            break
+        default:
+            print("Unknown")
+            break
+        }
+    }
+    
+    func blinkLabel(_ label:UILabel){
+        DispatchQueue.main.async {
+            self.setAsCalibrating(label)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+                self.setAsNormal(label)
+            })
+        }
+        
+    }
+    
+    func getPrediction(_ image:[Double]){
+        var model = "CNN";
+        if(toggleState.isOn){
+            model = "MLP";
+        }
+        let baseURL = "\(SERVER_URL)/\(model)/PredictOne";
+        let postUrl = URL(string: "\(baseURL)")
+        
+        // create a custom HTTP POST request
+        var request = URLRequest(url: postUrl!)
+        
+        // data to send in body of post request (send arguments as json)
+        let jsonUpload:NSDictionary = ["image":image]
+        
+        
+        let requestBody:Data? = self.convertDictionaryToData(with:jsonUpload)
+        
+        request.httpMethod = "POST"
+        request.httpBody = requestBody
+        
+        let postTask : URLSessionDataTask = self.session.dataTask(with: request,
+                                                                  completionHandler:{
+                        (data, response, error) in
+                        if(error != nil){
+                            if let res = response{
+                                print("Response:\n",res)
+                            }
+                        }
+                        else{ // no error we are aware of
+                            let jsonDictionary = self.convertDataToDictionary(with: data)
+                            
+                            let labelResponse = jsonDictionary["prediction"]!
+                            print(labelResponse)
+                            self.displayLabelResponse(labelResponse as! String)
+
+                        }
+                                                                    
+        })
+        
+        postTask.resume() // start the task
+    }
+    
+    //MARK: JSON Conversion Functions
+    func convertDictionaryToData(with jsonUpload:NSDictionary) -> Data?{
+        do { // try to make JSON and deal with errors using do/catch block
+            let requestBody = try JSONSerialization.data(withJSONObject: jsonUpload, options:JSONSerialization.WritingOptions.prettyPrinted)
+            return requestBody
+        } catch {
+            print("json error: \(error.localizedDescription)")
+            return nil
+        }
+    }
+    
+    func convertDataToDictionary(with data:Data?)->NSDictionary{
+        do { // try to parse JSON and deal with errors using do/catch block
+            let jsonDictionary: NSDictionary =
+                try JSONSerialization.jsonObject(with: data!,
+                                              options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
+            
+            return jsonDictionary
+            
+        } catch {
+            
+            if let strData = String(data:data!, encoding:String.Encoding(rawValue: String.Encoding.utf8.rawValue)){
+                            print("printing JSON received as string: "+strData)
+            }else{
+                print("json error: \(error.localizedDescription)")
+            }
+            return NSDictionary() // just return empty
         }
     }
     
