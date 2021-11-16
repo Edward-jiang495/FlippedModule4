@@ -126,17 +126,19 @@ class PredictMLP(BaseHandler):
 
 class TrainCNN(BaseHandler):
     def post(self):
-        print("Training CNN")
-        epochs = self.get_argument("epochs")
+        data = json.loads(self.request.body.decode("utf-8"))
+        epochs = data['epochs']
+        print(f"Training CNN with {epochs} epochs")
+        # epochs = self.get_argument("epochs")
 
         self.write_json({"status":"ok"})
         
 
 class TrainMLP(BaseHandler):
     def post(self):
-        print("Training MLP")
-        epochs = self.get_argument("epochs")
-
+        data = json.loads(self.request.body.decode("utf-8"))
+        epochs = data['epochs']
+        print(f"Training MLP with {epochs} epochs")
 
         self.write_json({"status":"ok"})
         
@@ -144,10 +146,19 @@ class TrainMLP(BaseHandler):
 class UploadCNNData(BaseHandler):
     def post(self):
         print("Uploading CNN Data")
-        photo = self.get_argument("photo")
+        data = json.loads(self.request.body.decode("utf-8"))
+
+        image = data['image']
+        target_str = data['target']
+        target = None
+        if target_str == "false":
+            target = False
+        elif target_str == "true":
+            target = True
 
         dbid = self.db.CNN.insert(
-            {"photo":photo}
+            {"image":image},
+            {"target":target}
             )
 
         self.write_json({"status":"ok"})
@@ -156,11 +167,21 @@ class UploadCNNData(BaseHandler):
 class UploadMLPData(BaseHandler):
     def post(self):
         print("Uploading MLP data")
+        data = json.loads(self.request.body.decode("utf-8"))
 
-        photo = self.get_argument("photo")
+        image = data['image']
+        target_str = data['target']
+        print(image)
+        target = None
+        if target_str == "false":
+            target = False
+        elif target_str == "true":
+            target = True
 
         dbid = self.db.MLP.insert(
-                {"photo":photo}
+                {"image":image},
+                {"target":target}
+
             )
         
         self.write_json({"status":"ok"})

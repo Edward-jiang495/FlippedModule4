@@ -40,8 +40,8 @@ class Application(tornado.web.Application):
                     (r"/MLP/train[/]?",       eh.TrainMLP),   # needs nginx running to work           
                     (r"/CNN/predict[/]?",       eh.PredictCNN),   # needs nginx running to work           
                     (r"/MLP/predict[/]?",       eh.PredictMLP),   # needs nginx running to work           
-                    (r"/CNN/uploadimage[/]?",       eh.UploadCNNData),   # needs nginx running to work           
-                    (r"/MLP/uploadimage[/]?",       eh.UploadMLPData),   # needs nginx running to work           
+                    (r"/CNN/UploadImage[/]?",       eh.UploadCNNData),   # needs nginx running to work           
+                    (r"/MLP/UploadImage[/]?",       eh.UploadMLPData),   # needs nginx running to work           
 
                     ]
 

@@ -1,4 +1,5 @@
-let SERVER_URL = "http://10.8.27.223:8000" // change this for your server name!!!
+//let SERVER_URL = "http://10.8.27.223:8000" // change this for your server name!!!
+let SERVER_URL = "http://10.8.106.203:8000"
 
 import UIKit
 import CoreMotion
@@ -63,10 +64,13 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
         imageView.image = info[.originalImage] as? UIImage
         let base64EncondedImage = convertImageToBase64(image: info[.originalImage] as! UIImage)
         if(imagePicker.title == "notHotDog"){
+            print("Sending negative train data example.")
             sendTrainData(image: base64EncondedImage, target: "false");
         }else if(imagePicker.title == "hotDog"){
+            print("Sending positive train data example.")
             sendTrainData(image: base64EncondedImage, target: "true");
         }else if(imagePicker.title == "predict"){
+            print("Predicting image.")
             getPrediction(image: base64EncondedImage)
         }else{
             print("No valid action for image.")
@@ -92,9 +96,9 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
     func sendTrainData(image: String,target: String){
         var model = "CNN";
         if mlState.selectedSegmentIndex == 0{
-            model = "CNN";
+            model = "MLP";
         }
-        let baseURL = "\(SERVER_URL)/\(model)/AddImage";
+        let baseURL = "\(SERVER_URL)/\(model)/UploadImage";
       
         let postUrl = URL(string: "\(baseURL)")
         
@@ -103,7 +107,7 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
         
         // data to send in body of post request (send arguments as json)
         let jsonUpload:NSDictionary = ["image":image,"target":target]
-        
+        print(jsonUpload)
         
         let requestBody:Data? = self.convertDictionaryToData(with:jsonUpload)
         
@@ -132,9 +136,9 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
     func getPrediction(image:String){
         var model = "CNN";
         if mlState.selectedSegmentIndex == 0{
-            model = "CNN";
+            model = "MLP";
         }
-        let baseURL = "\(SERVER_URL)/\(model)/AddImage";
+        let baseURL = "\(SERVER_URL)/\(model)/predict";
         let postUrl = URL(string: "\(baseURL)")
         
         // create a custom HTTP POST request
@@ -174,7 +178,7 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
     func resetModel(){
         var model = "CNN";
         if mlState.selectedSegmentIndex == 0{
-            model = "CNN";
+            model = "MLP";
         }
         let baseURL = "\(SERVER_URL)/\(model)/reset";
         let postUrl = URL(string: "\(baseURL)")
@@ -213,7 +217,7 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
     func trainModel(){
         var model = "CNN";
         if mlState.selectedSegmentIndex == 0{
-            model = "CNN";
+            model = "MLP";
         }
         let baseURL = "\(SERVER_URL)/\(model)/train";
         let postUrl = URL(string: "\(baseURL)")
