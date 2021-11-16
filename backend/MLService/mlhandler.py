@@ -10,6 +10,11 @@ img_height = 128
 img_width = 128
 optimizer = keras.optimizers.Adam(learning_rate=0.0001)
 num_classes = 2
+compile_options = {
+    "optimizer": optimizer,
+    "loss": keras.losses.BinaryCrossentropy(from_logits=True),
+    "metrics": [keras.metrics.BinaryAccuracy()],
+}
 
 
 def get_dataset_from_dir(images_dir: path) -> tf.data.Dataset:
@@ -69,8 +74,7 @@ def make_pretrainable_model(pretrain_type: PretrainType) -> keras.Model:
         layers.Dense(1),
     ])
 
-    model.compile(optimizer=optimizer, loss=keras.losses.BinaryCrossentropy(from_logits=True),
-                  metrics=[keras.metrics.BinaryAccuracy()])
+    model.compile(**compile_options)
     return model
 
 
@@ -90,6 +94,8 @@ def load_model(directory: path) -> keras.Model:
         with open(path.join(directory, "model.json"), "r") as json_file:
             model = keras.models.model_from_json(json_file.read())
             model.load_weights(path.join(directory, "weights.h5"))
+            model.compile(**compile_options)
+
             return model
 
 
