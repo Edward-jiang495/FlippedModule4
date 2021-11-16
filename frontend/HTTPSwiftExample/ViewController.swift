@@ -18,7 +18,6 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
     }()
     
     let operationQueue = OperationQueue()
-    var isHotdog:Bool = true;
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,11 +44,8 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
         imagePicker =  UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.sourceType = .camera
-
-        isHotdog = true
+        imagePicker.title = "hotdog"
         present(imagePicker, animated: true, completion: nil)
-
-
     }
     
     
@@ -57,11 +53,8 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
         imagePicker =  UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.sourceType = .camera
-        isHotdog = false
+        imagePicker.title = "notHotdog"
         present(imagePicker, animated: true, completion: nil)
-        
-
-
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -69,23 +62,34 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
             imageView.image = info[.originalImage] as? UIImage
             if mlState.selectedSegmentIndex == 0 {
                 print("MLP sent")
-//                if isHotdog{
-//
-//                }
-//                else{
-//
-//                }
+                if imagePicker.title=="hotdog"{
+                    print("IS hotdog")
+
+                }
+                else if imagePicker.title=="notHotdog"{
+                    print("No hotdog")
+
+                }
+                else if imagePicker.title=="predict"{
+                    print("predict dog")
+                    
+                }
 //                sendFeatures(image: ciImage!)
             }
             else if mlState.selectedSegmentIndex == 1 {
                 print("CNN sent ")
-//                if isHotdog{
-//
-//                }
-//                else{
-//
-//                }
-//                sendFeatures(image: ciImage!)
+                if imagePicker.title=="hotdog"{
+                    print("IS hotdog")
+
+                }
+                else if imagePicker.title=="notHotdog"{
+                    print("No hotdog")
+
+                }
+                else if imagePicker.title=="predict"{
+                    print("preduct dog")
+                    
+                }
             }
             else{
                 print("ERROR")
@@ -109,30 +113,13 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
     
     @IBAction func predict(_ sender: UIButton) {
         //predict based on pics
-        if(imageView.image != nil){
-//            let image:UIImage = imageView.image!
-//            let imageData = image.jpegData(compressionQuality: 1)
-//            let imageBase64String = imageData?.base64EncodedString()
-//            print(imageBase64String ?? "Could not encode image to Base64")
-
-            
-            
-            if mlState.selectedSegmentIndex == 0 {
-                print("MLP")
-                
-//                getPrediction(image: ciImage!)
-            }
-            else if mlState.selectedSegmentIndex == 1 {
-                print("CNN")
-//                getPrediction(image: ciImage!)
-            }
-            else{
-                print("ERROR")
-            }
-        }
-        else{
-            self.showResult(result: "Input image cannot be empty")
-        }
+        imagePicker =  UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = .camera
+        imagePicker.title = "predict"
+     
+        present(imagePicker, animated: true, completion: nil)
+        
     }
     
     @IBAction func train(_ sender: UIButton) {
