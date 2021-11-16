@@ -14,6 +14,7 @@ import json
 import pdb
 from datetime import datetime
 
+from MLService.ml_handler import ModelType, train_base_model
 
 class MSLC(BaseHandler):
     def get(self):
@@ -89,10 +90,78 @@ class LogToDatabaseHandler(BaseHandler):
             )
         self.write_json({"id":str(dbid)})
 
-# deprecated functionality 
-class FileUploadHandler(BaseHandler):
+
+class ResetCNN(BaseHandler):
     def post(self):
-        print(str(self.request))
-        # nginx should be setup for this to work properly
-        # you will need to forward the fields to get it running
-        # something with _name and _path
+        print("Resetting CNN")
+        self.db.CNN.drop()
+        train_base_model(ModelType.CNN)
+        self.write_json({"status":"ok"})
+        #train base model
+
+
+class ResetMLP(BaseHandler):
+    def post(self):
+        print("Resetting MLP")
+        self.db.MLP.drop()
+        train_base_model(ModelType.MLP)
+        self.write_json({"status":"ok"})
+
+class PredictCNN(BaseHandler):
+    def post(self):
+        print("Predicting CNN")
+
+        prediction = None
+        self.write_json({"prediction":prediction})
+
+
+class PredictMLP(BaseHandler):
+    def post(self):
+        print("Predicting MLP")
+        
+
+        prediction = None
+        self.write_json({"prediction":prediction})
+
+
+class TrainCNN(BaseHandler):
+    def post(self):
+        print("Training CNN")
+        epochs = self.get_argument("epochs")
+
+        self.write_json({"status":"ok"})
+        
+
+class TrainMLP(BaseHandler):
+    def post(self):
+        print("Training MLP")
+        epochs = self.get_argument("epochs")
+
+
+        self.write_json({"status":"ok"})
+        
+
+class UploadCNNData(BaseHandler):
+    def post(self):
+        print("Uploading CNN Data")
+        photo = self.get_argument("photo")
+
+        dbid = self.db.CNN.insert(
+            {"photo":photo}
+            )
+
+        self.write_json({"status":"ok"})
+        
+
+class UploadMLPData(BaseHandler):
+    def post(self):
+        print("Uploading MLP data")
+
+        photo = self.get_argument("photo")
+
+        dbid = self.db.MLP.insert(
+                {"photo":photo}
+            )
+        
+        self.write_json({"status":"ok"})
+        

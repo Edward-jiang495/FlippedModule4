@@ -34,7 +34,15 @@ class Application(tornado.web.Application):
                     (r"/PostWithJson[/]?", eh.JSONPostHandler),
                     (r"/LogToDb[/]?",      eh.LogToDatabaseHandler), # save to database, if exists
                     (r"/MSLC[/]?",         eh.MSLC), # custom class that we can add to
-                    (r"/Upload[/]?",       eh.FileUploadHandler),   # needs nginx running to work           
+                    (r"/CNN/reset[/]?",       eh.ResetCNN),   # needs nginx running to work    
+                    (r"/MLP/reset[/]?",       eh.ResetMLP),   # needs nginx running to work           
+                    (r"/CNN/train[/]?",       eh.TrainCNN),   # needs nginx running to work           
+                    (r"/MLP/train[/]?",       eh.TrainMLP),   # needs nginx running to work           
+                    (r"/CNN/predict[/]?",       eh.PredictCNN),   # needs nginx running to work           
+                    (r"/MLP/predict[/]?",       eh.PredictMLP),   # needs nginx running to work           
+                    (r"/CNN/uploadimage[/]?",       eh.UploadCNNData),   # needs nginx running to work           
+                    (r"/MLP/uploadimage[/]?",       eh.UploadMLPData),   # needs nginx running to work           
+
                     ]
 
 
