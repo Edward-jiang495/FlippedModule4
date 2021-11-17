@@ -12,6 +12,9 @@ from tornado.httpserver import HTTPServer
 from tornado.ioloop import IOLoop
 from tornado.options import define, options
 
+from MLService.mlhandler import get_model
+from MLService import *
+
 # custom imports
 from basehandler import BaseHandler
 import examplehandlers as eh
@@ -20,37 +23,49 @@ import examplehandlers as eh
 define("port", default=8000,
        help="run on the given port", type=int)
 
-# Utility to be used when creating the Tornado server
-# Contains the handlers and the database connection
-class Application(tornado.web.Application):
-    def __init__(self):
-        '''Store necessary handlers,
-        connect to database
-        '''
 
-        handlers = [(r"/[/]?",             BaseHandler), # raise 404
-                    (r"/GetExample[/]?",   eh.TestHandler), 
-                    (r"/DoPost[/]?",       eh.PostHandlerAsGetArguments),
-                    (r"/PostWithJson[/]?", eh.JSONPostHandler),
-                    (r"/LogToDb[/]?",      eh.LogToDatabaseHandler), # save to database, if exists
-                    (r"/MSLC[/]?",         eh.MSLC), # custom class that we can add to
-                    (r"/Upload[/]?",       eh.FileUploadHandler),   # needs nginx running to work           
+class Application(tornado.web.Application):
+    """
+    Utility to be used when creating the Tornado server
+    Contains the handlers and the database connection
+    """
+
+    def __init__(self):
+        """
+        Store necessary handlers,
+        connect to database
+        """
+
+        handlers = [(r"/[/]?", BaseHandler),  # raise 404
+                    # (r"/GetExample[/]?",   eh.TestHandler), 
+                    # (r"/DoPost[/]?",       eh.PostHandlerAsGetArguments),
+                    # (r"/PostWithJson[/]?", eh.JSONPostHandler),
+                    # (r"/LogToDb[/]?",      eh.LogToDatabaseHandler), # save to database, if exists
+                    # (r"/MSLC[/]?",         eh.MSLC), # custom class that we can add to
+                    (r"/CNN/reset[/]?", eh.ResetCNN),  # needs nginx running to work
+                    (r"/MLP/reset[/]?", eh.ResetMLP),  # needs nginx running to work
+                    (r"/CNN/train[/]?", eh.TrainCNN),  # needs nginx running to work
+                    (r"/MLP/train[/]?", eh.TrainMLP),  # needs nginx running to work
+                    (r"/CNN/predict[/]?", eh.PredictCNN),  # needs nginx running to work
+                    (r"/MLP/predict[/]?", eh.PredictMLP),  # needs nginx running to work
+                    (r"/CNN/UploadImage[/]?", eh.UploadCNNData),  # needs nginx running to work
+                    (r"/MLP/UploadImage[/]?", eh.UploadMLPData),  # needs nginx running to work
                     ]
 
-
         try:
-            self.client  = MongoClient(serverSelectionTimeoutMS=5) # local host, default port
-            print(self.client.server_info()) # force pymongo to look for possible running servers, error if none running
+            self.client = MongoClient(serverSelectionTimeoutMS=5)  # local host, default port
+            print(
+                self.client.server_info())  # force pymongo to look for possible running servers, error if none running
             # if we get here, at least one instance of pymongo is running
-            self.db = self.client.exampledatabase # database with labeledinstances, models
-            handlers.append((r"/SaveToDatabase[/]?",eh.LogToDatabaseHandler)) # add new handler for database
-            
+            self.db = self.client.exampledatabase  # database with labeledinstances, models
+            # handlers.append((r"/SaveToDatabase[/]?",eh.LogToDatabaseHandler)) # add new handler for database
+
         except ServerSelectionTimeoutError as inst:
-            print('\033[1m'+'Could not initialize database connection, skipping, Error Details:'+'\033[0m')
+            print('\033[1m' + 'Could not initialize database connection, skipping, Error Details:' + '\033[0m')
             print(inst)
             print('=================================')
 
-        settings = {'debug':True}
+        settings = {'debug': True}
         tornado.web.Application.__init__(self, handlers, **settings)
 
     def __exit__(self):
@@ -58,12 +73,17 @@ class Application(tornado.web.Application):
 
 
 def main():
-    '''Create server, begin IOLoop 
-    '''
+    """
+    Create server, begin IOLoop
+    """
+
     tornado.options.parse_command_line()
     http_server = HTTPServer(Application(), xheaders=True)
     http_server.listen(options.port)
+    get_model(ModelType.USER, PretrainType.XCEPTION)
+    get_model(ModelType.USER, PretrainType.INCEPTION_RESNET_V2)
     IOLoop.instance().start()
+
 
 if __name__ == "__main__":
     main()
