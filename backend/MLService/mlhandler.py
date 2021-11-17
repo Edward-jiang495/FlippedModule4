@@ -74,7 +74,7 @@ def make_pretrainable_model(pretrain_type: PretrainType) -> keras.Model:
         # transfer learning
         pretrained_model,
         layers.Flatten(),
-        layers.Dense(num_classes),
+        layers.Dense(1),
     ])
 
     model.compile(**compile_options)
@@ -170,13 +170,15 @@ def get_prediction(model: keras.Model, image_path: path) -> float:
     class_names = train_ds.class_names
 
     predictions = model.predict(img_array)
-    score = tf.nn.softmax(predictions[0])
 
-    return class_names[np.argmax(score)]
+    if predictions[0][0] < 0.5:
+        return class_names[0]
+    else:
+        return class_names[1]
 
 
 def __main__():
-    model = get_model(ModelType.USER, PretrainType.INCEPTION_RESNET_V2)
+    model = get_model(ModelType.USER, PretrainType.XCEPTION)
     # train_model(model, image_dirs[ModelType.USER]['train'])
 
     print(get_prediction(model, path.join(image_dirs[ModelType.BASE]['train'], 'hot_dog', '2417.jpg')))
@@ -184,6 +186,12 @@ def __main__():
     print(get_prediction(model, path.join(image_dirs[ModelType.BASE]['train'], 'hot_dog', '5079.jpg')))
     print(get_prediction(model, path.join(image_dirs[ModelType.BASE]['train'], 'hot_dog', '7896.jpg')))
     print(get_prediction(model, path.join(image_dirs[ModelType.BASE]['train'], 'hot_dog', '76722.jpg')))
+
+    print(get_prediction(model, path.join(image_dirs[ModelType.BASE]['train'], 'not_hot_dog', '197.jpg')))
+    print(get_prediction(model, path.join(image_dirs[ModelType.BASE]['train'], 'not_hot_dog', '1164.jpg')))
+    print(get_prediction(model, path.join(image_dirs[ModelType.BASE]['train'], 'not_hot_dog', '1167.jpg')))
+    print(get_prediction(model, path.join(image_dirs[ModelType.BASE]['train'], 'not_hot_dog', '4176.jpg')))
+    print(get_prediction(model, path.join(image_dirs[ModelType.BASE]['train'], 'not_hot_dog', '4770.jpg')))
 
 
 if __name__ == '__main__':
