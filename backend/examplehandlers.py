@@ -139,6 +139,9 @@ class PredictCNN(BaseHandler):
 
         # Delete Image
         delete_image(temp_image_path)
+
+        prediction = prediction.replace("_"," ").title()
+
         print(prediction)
 
         # Return Prediction
@@ -165,7 +168,10 @@ class PredictMLP(BaseHandler):
         # Delete Image
         delete_image(temp_image_path)
         
+        prediction = prediction.replace("_"," ").title()
+
         print(prediction)
+
         # Return Prediction
         self.write_json({"prediction":prediction})
 
@@ -206,7 +212,7 @@ class TrainMLP(BaseHandler):
 
         # clear directory
         clear_image_dir(image_dirs[ModelType.USER][PretrainType.XCEPTION])
-        
+
         self.write_json({"status":"ok","val_acc":history[1].history['val_binary_accuracy'][-1]})
 
         

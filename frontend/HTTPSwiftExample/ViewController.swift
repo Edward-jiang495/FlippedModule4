@@ -108,12 +108,12 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
             title = "CNN"
         }
         
-        let alert = UIAlertController(title: title, message: "The model has been reset", preferredStyle: .alert)
-
-        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-
-        self.present(alert, animated: true)
+//        let alert = UIAlertController(title: title, message: "The model has been reset", preferredStyle: .alert)
+//
+//        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+//        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+//
+//        self.present(alert, animated: true)
     }
     
     
@@ -215,9 +215,9 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
                         else{ // no error we are aware of
                             let jsonDictionary = self.convertDataToDictionary(with: data)
                             
-                            let labelResponse = jsonDictionary["prediction"]!
-                            print(labelResponse)
-                            self.showResult(result: labelResponse as! String)
+                            let labelResponse = jsonDictionary["prediction"] as! String
+                            
+                            self.showResult(result: labelResponse)
 
                         }
                                                                     
@@ -298,7 +298,7 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
                         else{ // no error we are aware of
                             let jsonDictionary = self.convertDataToDictionary(with: data)
                             var val_acc = jsonDictionary["val_acc"] as! Double;
-                            val_acc = round(val_acc * 10) / 10.0
+                            val_acc = round(val_acc * 1000) / 10.0
 
                             DispatchQueue.main.async {
                                 self.resultText.text = "Training finished with \(val_acc)% validation accuracy"
