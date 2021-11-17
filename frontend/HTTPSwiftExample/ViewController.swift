@@ -63,7 +63,7 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
             
         imagePicker.dismiss(animated: true, completion: nil)
         imageView.image = info[.originalImage] as? UIImage
-        let base64EncondedImage = convertImageToBase64(image: info[.originalImage] as! UIImage)
+        let base64EncondedImage = convertImageToBase64(image: imageView.image as! UIImage)
         if(imagePicker.title == "notHotDog"){
             print("Sending negative train data example.")
             sendTrainData(image: base64EncondedImage, target: "false");
@@ -76,12 +76,35 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
         }else{
             print("No valid action for image.")
         }
+//        print("SIZE")
+//        print(imageView.image!.size.width)
+//        print(imageView.image!.size.height)
+        print(imageView.image!.size.width * imageView.image!.scale)
+        print(imageView.image!.size.height * imageView.image!.scale)
+
+
+        
+
     }
     
     
     @IBAction func reset(_ sender: UIButton) {
         //reset model
         resetModel()
+        var title = ""
+        if mlState.selectedSegmentIndex == 0{
+            title = "MLP"
+        }
+        else if mlState.selectedSegmentIndex == 1{
+            title = "CNN"
+        }
+        
+        let alert = UIAlertController(title: title, message: "The model has been reset", preferredStyle: .alert)
+
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+
+        self.present(alert, animated: true)
     }
     
     
@@ -90,6 +113,20 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
     @IBAction func train(_ sender: UIButton) {
         //train with previously uploaded pics
         trainModel()
+        var title = ""
+        if mlState.selectedSegmentIndex == 0{
+            title = "MLP"
+        }
+        else if mlState.selectedSegmentIndex == 1{
+            title = "CNN"
+        }
+        
+        let alert = UIAlertController(title: title, message: "The model has been trained", preferredStyle: .alert)
+
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+
+        self.present(alert, animated: true)
 
     }
     
@@ -279,8 +316,19 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
     //https://www.appsdeveloperblog.com/uiimage-base64-encoding-and-decoding-in-swift/
     //https://stackoverflow.com/questions/11251340/convert-between-uiimage-and-base64-string
     func convertImageToBase64(image:UIImage) -> String{
-        let imageData = image.jpegData(compressionQuality: 1)
+//        resize uiimage here to 256, 256 pixels
+        let size = CGSize(width: 256,height: 256)
+        let imageResized = resizeImage(image: image, targetSize: size)
+        DispatchQueue.main.async {
+            self.imageView.image = imageResized
+            print("UPDATE RESCCALE")
+            print(imageResized!.size.width * imageResized!.scale)
+            print(imageResized!.size.height * imageResized!.scale)
+
+        }
+        let imageData = imageResized?.jpegData(compressionQuality: 1)
         
+//        let imageData = image.jpegData(compressionQuality: 1)
         if let imageBase64String = imageData?.base64EncodedString(){
             return imageBase64String
         }else{
@@ -319,5 +367,34 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
             return NSDictionary() // just return empty
         }
     }
+    
+////    https://stackoverflow.com/questions/31314412/how-to-resize-image-in-swift
+    func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage? {
+        let size = image.size
+
+        let widthRatio  = targetSize.width  / size.width
+        let heightRatio = targetSize.height / size.height
+
+        // Figure out what our orientation is, and use that to form the rectangle
+        var newSize: CGSize
+        if(widthRatio > heightRatio) {
+            newSize = CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
+        } else {
+            newSize = CGSize(width: size.width * widthRatio, height: size.height * widthRatio)
+        }
+
+        // This is the rect that we've calculated out and this is what is actually used below
+        let rect = CGRect(origin: .zero, size: newSize)
+
+        // Actually do the resizing to the rect using the ImageContext stuff
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+        image.draw(in: rect)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        return newImage
+    }
+
+
     
 }
