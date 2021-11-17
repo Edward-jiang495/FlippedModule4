@@ -27,7 +27,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="355" height="32"/>
                                         <segments>
                                             <segment title="Xception"/>
-                                            <segment title="Inception Resnet v2"/>
+                                            <segment title="Inception ResNet v2"/>
                                         </segments>
                                     </segmentedControl>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2uT-7m-pQp">

@@ -278,8 +278,14 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
                                     self.resultText.text = "Training finished with \(val_acc)% validation accuracy";
                                 }
                             }else{
-                                DispatchQueue.main.async {
-                                    self.resultText.text = "Error when training.";
+                                if let message = jsonDictionary["Message"] as? String{
+                                    DispatchQueue.main.async {
+                                        self.resultText.text = message;
+                                    }
+                                }else{
+                                    DispatchQueue.main.async {
+                                        self.resultText.text = "Error when training.";
+                                    }
                                 }
                             }
                             

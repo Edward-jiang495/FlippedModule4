@@ -149,9 +149,11 @@ def get_model(model_type: ModelType, pretrain_type: PretrainType) -> keras.Model
 
 
 def train_user_model(model: keras.Model, pretrain_type: PretrainType, images: path, epochs=5) -> tuple:
-    if not len(os.listdir(images)):
+    if not [os.path.join(r, fn)
+            for r, ds, fs in os.walk(images)
+            for fn in fs if fn.endswith(".jpg")]:
         print(f"No images found in {images}")
-        return None, None
+        return None
 
     train_ds = get_dataset_from_dir(images)
     test_ds = get_dataset_from_dir(image_dirs[ModelType.BASE]['test'])

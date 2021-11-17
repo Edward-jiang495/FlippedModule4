@@ -1,5 +1,4 @@
 #!/usr/bin/python
-
 import tornado.web
 
 from tornado.web import HTTPError
@@ -117,7 +116,10 @@ class TrainInception(BaseHandler):
         # clear directory
         clear_image_dir(image_dirs[ModelType.USER][PretrainType.INCEPTION_RESNET_V2])
 
-        self.write_json({"status":"ok","val_acc":history[1].history['val_binary_accuracy'][-1]})
+        if history is None:
+            self.write_json({"status":"Error","Message":"Uploading data before training"})
+        else:
+            self.write_json({"status":"ok","val_acc":history[1].history['val_binary_accuracy'][-1]})
         
 
 class TrainXception(BaseHandler):
@@ -136,7 +138,10 @@ class TrainXception(BaseHandler):
         # clear directory
         clear_image_dir(image_dirs[ModelType.USER][PretrainType.XCEPTION])
 
-        self.write_json({"status":"ok","val_acc":history[1].history['val_binary_accuracy'][-1]})
+        if history is None:
+            self.write_json({"status":"Error","Message":"Uploading data before training"})
+        else:
+            self.write_json({"status":"ok","val_acc":history[1].history['val_binary_accuracy'][-1]})
 
         
 
