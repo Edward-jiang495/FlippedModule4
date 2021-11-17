@@ -10,7 +10,7 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
         let sessionConfig = URLSessionConfiguration.ephemeral
         
         sessionConfig.timeoutIntervalForRequest = 600.0
-        sessionConfig.timeoutIntervalForResource = 8.0
+        sessionConfig.timeoutIntervalForResource = 600.0
         sessionConfig.httpMaximumConnectionsPerHost = 1
         
         return URLSession(configuration: sessionConfig,
