@@ -1,4 +1,5 @@
 import tensorflow as tf
+import numpy as np
 from tensorflow import keras
 from tensorflow.keras import layers
 import numpy as np
@@ -12,10 +13,9 @@ optimizer = keras.optimizers.Adam(learning_rate=0.0001)
 num_classes = 2
 compile_options = {
     "optimizer": optimizer,
-    "loss": keras.losses.BinaryCrossentropy(from_logits=True),
+    "loss": keras.losses.BinaryCrossentropy(from_logits=False),
     "metrics": [keras.metrics.BinaryAccuracy()],
 }
-global class_names
 
 
 def get_dataset_from_dir(images_dir: path) -> tf.data.Dataset:
@@ -25,9 +25,6 @@ def get_dataset_from_dir(images_dir: path) -> tf.data.Dataset:
                                                           batch_size=batch_size,
                                                           shuffle=True,
                                                           crop_to_aspect_ratio=False)
-
-    global class_names
-    class_names = ds.class_names
 
     return ds
 
@@ -169,9 +166,12 @@ def get_prediction(model: keras.Model, image_path: path) -> float:
     img_array = keras.utils.img_to_array(img)
     img_array = tf.expand_dims(img_array, 0)
 
+    train_ds = get_dataset_from_dir(image_dirs[ModelType.BASE]['train'])
+    class_names = train_ds.class_names
+
     predictions = model.predict(img_array)
     score = tf.nn.softmax(predictions[0])
-    global class_names
+
     return class_names[np.argmax(score)]
 
 
@@ -180,6 +180,10 @@ def __main__():
     # train_model(model, image_dirs[ModelType.USER]['train'])
 
     print(get_prediction(model, path.join(image_dirs[ModelType.BASE]['train'], 'hot_dog', '2417.jpg')))
+    print(get_prediction(model, path.join(image_dirs[ModelType.BASE]['train'], 'hot_dog', '3690.jpg')))
+    print(get_prediction(model, path.join(image_dirs[ModelType.BASE]['train'], 'hot_dog', '5079.jpg')))
+    print(get_prediction(model, path.join(image_dirs[ModelType.BASE]['train'], 'hot_dog', '7896.jpg')))
+    print(get_prediction(model, path.join(image_dirs[ModelType.BASE]['train'], 'hot_dog', '76722.jpg')))
 
 
 if __name__ == '__main__':
