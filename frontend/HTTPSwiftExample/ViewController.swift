@@ -187,9 +187,12 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
                         else{ // no error we are aware of
                             let jsonDictionary = self.convertDataToDictionary(with: data)
                             
-                            let labelResponse = jsonDictionary["prediction"] as! String
-                            
-                            self.showResult(result: labelResponse)
+                            if let labelResponse = jsonDictionary["prediction"] as? String{
+                                self.showResult(result: labelResponse)
+                            }else{
+                                self.showResult(result: "Error predicting.")
+                            }
+                                
 
                         }
                                                                     
@@ -269,11 +272,15 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
                         }
                         else{ // no error we are aware of
                             let jsonDictionary = self.convertDataToDictionary(with: data)
-                            var val_acc = jsonDictionary["val_acc"]!;
-                            val_acc = round(val_acc as! Double * 1000) / 10.0
-
-                            DispatchQueue.main.async {
-                                self.resultText.text = "Training finished with \(val_acc)% validation accuracy"
+                            if var val_acc = jsonDictionary["val_acc"]{
+                                val_acc = round(val_acc as! Double * 1000) / 10.0
+                                DispatchQueue.main.async {
+                                    self.resultText.text = "Training finished with \(val_acc)% validation accuracy";
+                                }
+                            }else{
+                                DispatchQueue.main.async {
+                                    self.resultText.text = "Error when training.";
+                                }
                             }
                             
                         }

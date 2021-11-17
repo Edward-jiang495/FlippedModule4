@@ -110,8 +110,6 @@ class TrainInception(BaseHandler):
         # Load Model
         model = get_model(ModelType.USER, PretrainType.INCEPTION_RESNET_V2)
 
-        self.write_json({"status":"ok"})
-
         # Train model
         history = train_user_model(model,PretrainType.INCEPTION_RESNET_V2,
                         image_dirs[ModelType.USER][PretrainType.INCEPTION_RESNET_V2],epochs)
