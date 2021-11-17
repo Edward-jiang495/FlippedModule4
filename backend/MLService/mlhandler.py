@@ -15,7 +15,7 @@ compile_options = {
     "loss": keras.losses.BinaryCrossentropy(from_logits=True),
     "metrics": [keras.metrics.BinaryAccuracy()],
 }
-class_names = None
+global class_names
 
 
 def get_dataset_from_dir(images_dir: path) -> tf.data.Dataset:
@@ -26,10 +26,8 @@ def get_dataset_from_dir(images_dir: path) -> tf.data.Dataset:
                                                           shuffle=True,
                                                           crop_to_aspect_ratio=False)
 
-    print("before call")
-    if class_names is None:
-        print("inside")
-        class_names = ds.class_names
+    global class_names
+    class_names = ds.class_names
 
     return ds
 
@@ -173,6 +171,7 @@ def get_prediction(model: keras.Model, image_path: path) -> float:
 
     predictions = model.predict(img_array)
     score = tf.nn.softmax(predictions[0])
+    global class_names
     return class_names[np.argmax(score)]
 
 

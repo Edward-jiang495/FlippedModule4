@@ -186,7 +186,7 @@ class TrainCNN(BaseHandler):
         # clear directory
         clear_image_dir(image_dirs[ModelType.USER][PretrainType.INCEPTION_RESNET_V2])
 
-        self.write_json({"status":"ok","val_acc":history.history['val_acc'][-1]})
+        self.write_json({"status":"ok","val_acc":history['val_acc'][-1]})
         
 
 class TrainMLP(BaseHandler):
@@ -205,7 +205,7 @@ class TrainMLP(BaseHandler):
         # clear directory
         clear_image_dir(image_dirs[ModelType.USER][PretrainType.XCEPTION])
 
-        self.write_json({"status":"ok","val_acc":history.history['val_acc'][-1]})
+        self.write_json({"status":"ok","val_acc":history['val_acc'][-1]})
 
         
 
