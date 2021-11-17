@@ -291,8 +291,8 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
                         }
                         else{ // no error we are aware of
                             let jsonDictionary = self.convertDataToDictionary(with: data)
-                            var val_acc = jsonDictionary["val_acc"] as! Double;
-                            val_acc = round(val_acc * 1000) / 10.0
+                            var val_acc = jsonDictionary["val_acc"]!;
+                            val_acc = round(val_acc as! Double * 1000) / 10.0
 
                             DispatchQueue.main.async {
                                 self.resultText.text = "Training finished with \(val_acc)% validation accuracy"
