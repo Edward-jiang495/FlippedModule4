@@ -66,12 +66,21 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
         let base64EncondedImage = convertImageToBase64(image: imageView.image as! UIImage)
         if(imagePicker.title == "notHotDog"){
             print("Sending negative train data example.")
+            DispatchQueue.main.async {
+                self.resultText.text = "Uploading Negative Sample..."
+            }
             sendTrainData(image: base64EncondedImage, target: false);
         }else if(imagePicker.title == "hotDog"){
             print("Sending positive train data example.")
+            DispatchQueue.main.async {
+                self.resultText.text = "Uploding Positive Sample..."
+            }
             sendTrainData(image: base64EncondedImage, target: true);
         }else if(imagePicker.title == "predict"){
             print("Predicting image.")
+            DispatchQueue.main.async {
+                self.resultText.text = "predicting..."
+            }
             getPrediction(image: base64EncondedImage)
         }else{
             print("No valid action for image.")
@@ -112,21 +121,23 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
     
     @IBAction func train(_ sender: UIButton) {
         //train with previously uploaded pics
+        
         trainModel()
-        var title = ""
+        var model = ""
         if mlState.selectedSegmentIndex == 0{
-            title = "MLP"
+            model = "MLP"
         }
         else if mlState.selectedSegmentIndex == 1{
-            title = "CNN"
+            model = "CNN"
         }
+        self.resultText.text = "Training \(model)..."
         
-        let alert = UIAlertController(title: title, message: "The model has been trained", preferredStyle: .alert)
-
-        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-
-        self.present(alert, animated: true)
+//        let alert = UIAlertController(title: title, message: "The model has been trained", preferredStyle: .alert)
+//
+//        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+//        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+//
+//        self.present(alert, animated: true)
 
     }
     
@@ -161,7 +172,9 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
                 }
                 else{
                     let jsonDictionary = self.convertDataToDictionary(with: data)
-//
+                    DispatchQueue.main.async {
+                        self.resultText.text = "Training data uploaded";
+                    }
 //                    print(jsonDictionary["feature"]!)
 //                    print(jsonDictionary["label"]!)
                 }
@@ -243,7 +256,9 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
                         }
                         else{ // no error we are aware of
                             let jsonDictionary = self.convertDataToDictionary(with: data)
-                           
+                            DispatchQueue.main.async {
+                                self.resultText.text = "Model reset"
+                            }
 
                         }
                                                                     
@@ -282,8 +297,13 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
                         }
                         else{ // no error we are aware of
                             let jsonDictionary = self.convertDataToDictionary(with: data)
-                            
+                            var val_acc = jsonDictionary["val_acc"] as! Double;
+                            val_acc = round(val_acc * 10) / 10.0
 
+                            DispatchQueue.main.async {
+                                self.resultText.text = "Training finished with \(val_acc)% validation accuracy"
+                            }
+                            
                         }
                                                                     
         })

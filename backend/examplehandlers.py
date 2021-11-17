@@ -139,6 +139,7 @@ class PredictCNN(BaseHandler):
 
         # Delete Image
         delete_image(temp_image_path)
+        print(prediction)
 
         # Return Prediction
         self.write_json({"prediction":prediction})
@@ -164,6 +165,7 @@ class PredictMLP(BaseHandler):
         # Delete Image
         delete_image(temp_image_path)
         
+        print(prediction)
         # Return Prediction
         self.write_json({"prediction":prediction})
 
@@ -186,7 +188,7 @@ class TrainCNN(BaseHandler):
         # clear directory
         clear_image_dir(image_dirs[ModelType.USER][PretrainType.INCEPTION_RESNET_V2])
 
-        self.write_json({"status":"ok","val_acc":history['val_acc'][-1]})
+        self.write_json({"status":"ok","val_acc":history[1].history['val_binary_accuracy'][-1]})
         
 
 class TrainMLP(BaseHandler):
@@ -204,8 +206,8 @@ class TrainMLP(BaseHandler):
 
         # clear directory
         clear_image_dir(image_dirs[ModelType.USER][PretrainType.XCEPTION])
-
-        self.write_json({"status":"ok","val_acc":history['val_acc'][-1]})
+        
+        self.write_json({"status":"ok","val_acc":history[1].history['val_binary_accuracy'][-1]})
 
         
 
