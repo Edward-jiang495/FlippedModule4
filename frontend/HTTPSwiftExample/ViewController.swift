@@ -20,7 +20,6 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
     
     @IBOutlet weak var epochSlider: UISlider!
     let operationQueue = OperationQueue()
-    var isHotdog:Bool = true;
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,7 +50,6 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
     
     @IBAction func notHotdog(_ sender: UIButton) {
         openCamera(title: "notHotDog")
-
     }
     
     @IBAction func predict(_ sender: UIButton) {
@@ -59,8 +57,7 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
         openCamera(title: "predict")
     }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-            
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {            
         imagePicker.dismiss(animated: true, completion: nil)
         imageView.image = info[.originalImage] as? UIImage
         let base64EncondedImage = convertImageToBase64(image: imageView.image as! UIImage)
@@ -115,9 +112,6 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
 //
 //        self.present(alert, animated: true)
     }
-    
-    
-
     
     @IBAction func train(_ sender: UIButton) {
         //train with previously uploaded pics
