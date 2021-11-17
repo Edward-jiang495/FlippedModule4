@@ -37,19 +37,14 @@ class Application(tornado.web.Application):
         """
 
         handlers = [(r"/[/]?", BaseHandler),  # raise 404
-                    # (r"/GetExample[/]?",   eh.TestHandler), 
-                    # (r"/DoPost[/]?",       eh.PostHandlerAsGetArguments),
-                    # (r"/PostWithJson[/]?", eh.JSONPostHandler),
-                    # (r"/LogToDb[/]?",      eh.LogToDatabaseHandler), # save to database, if exists
-                    # (r"/MSLC[/]?",         eh.MSLC), # custom class that we can add to
-                    (r"/CNN/reset[/]?", eh.ResetCNN),  # needs nginx running to work
-                    (r"/MLP/reset[/]?", eh.ResetMLP),  # needs nginx running to work
-                    (r"/CNN/train[/]?", eh.TrainCNN),  # needs nginx running to work
-                    (r"/MLP/train[/]?", eh.TrainMLP),  # needs nginx running to work
-                    (r"/CNN/predict[/]?", eh.PredictCNN),  # needs nginx running to work
-                    (r"/MLP/predict[/]?", eh.PredictMLP),  # needs nginx running to work
-                    (r"/CNN/UploadImage[/]?", eh.UploadCNNData),  # needs nginx running to work
-                    (r"/MLP/UploadImage[/]?", eh.UploadMLPData),  # needs nginx running to work
+                    (r"/Inception/reset[/]?", eh.ResetInception),  # needs nginx running to work
+                    (r"/Xception/reset[/]?", eh.ResetXception),  # needs nginx running to work
+                    (r"/Inception/train[/]?", eh.TrainInception),  # needs nginx running to work
+                    (r"/Xception/train[/]?", eh.TrainXception),  # needs nginx running to work
+                    (r"/Inception/predict[/]?", eh.PredictInception),  # needs nginx running to work
+                    (r"/Xception/predict[/]?", eh.PredictXception),  # needs nginx running to work
+                    (r"/Inception/UploadImage[/]?", eh.UploadInceptionData),  # needs nginx running to work
+                    (r"/Xception/UploadImage[/]?", eh.UploadXceptionData),  # needs nginx running to work
                     ]
 
         try:
