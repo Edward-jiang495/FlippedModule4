@@ -97,49 +97,27 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
     @IBAction func reset(_ sender: UIButton) {
         //reset model
         resetModel()
-        var title = ""
-        if mlState.selectedSegmentIndex == 0{
-            title = "MLP"
-        }
-        else if mlState.selectedSegmentIndex == 1{
-            title = "CNN"
-        }
-        
-//        let alert = UIAlertController(title: title, message: "The model has been reset", preferredStyle: .alert)
-//
-//        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-//        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-//
-//        self.present(alert, animated: true)
     }
     
     @IBAction func train(_ sender: UIButton) {
         //train with previously uploaded pics
-        
         trainModel()
         var model = ""
         if mlState.selectedSegmentIndex == 0{
-            model = "MLP"
+            model = "Xception"
         }
         else if mlState.selectedSegmentIndex == 1{
-            model = "CNN"
+            model = "Inception ResNet v2"
         }
         self.resultText.text = "Training \(model)..."
-        
-//        let alert = UIAlertController(title: title, message: "The model has been trained", preferredStyle: .alert)
-//
-//        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-//        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-//
-//        self.present(alert, animated: true)
 
     }
     
     //MARK: API calls
     func sendTrainData(image: String,target: Bool){
-        var model = "CNN";
+        var model = "Inception";
         if mlState.selectedSegmentIndex == 0{
-            model = "MLP";
+            model = "Xception";
         }
         let baseURL = "\(SERVER_URL)/\(model)/UploadImage";
       
@@ -179,9 +157,9 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
     }
     
     func getPrediction(image:String){
-        var model = "CNN";
+        var model = "Inception";
         if mlState.selectedSegmentIndex == 0{
-            model = "MLP";
+            model = "Xception";
         }
         let baseURL = "\(SERVER_URL)/\(model)/predict";
         let postUrl = URL(string: "\(baseURL)")
@@ -221,9 +199,9 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
     }
     
     func resetModel(){
-        var model = "CNN";
+        var model = "Inception";
         if mlState.selectedSegmentIndex == 0{
-            model = "MLP";
+            model = "Xception";
         }
         let baseURL = "\(SERVER_URL)/\(model)/reset";
         let postUrl = URL(string: "\(baseURL)")
@@ -262,9 +240,9 @@ class ViewController: UIViewController, URLSessionDelegate, UINavigationControll
     }
     
     func trainModel(){
-        var model = "CNN";
+        var model = "Inception";
         if mlState.selectedSegmentIndex == 0{
-            model = "MLP";
+            model = "Xception";
         }
         let baseURL = "\(SERVER_URL)/\(model)/train";
         let postUrl = URL(string: "\(baseURL)")

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="V7X-jh-Zvk">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="V7X-jh-Zvk">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -21,41 +21,41 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="43" translatesAutoresizingMaskIntoConstraints="NO" id="4Bv-Mx-F43">
-                                <rect key="frame" x="0.0" y="20" width="375" height="627"/>
+                                <rect key="frame" x="10" y="20" width="355" height="627"/>
                                 <subviews>
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Kep-Ln-J7M">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="32"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="355" height="32"/>
                                         <segments>
-                                            <segment title="MLP"/>
-                                            <segment title="CNN"/>
+                                            <segment title="Xception"/>
+                                            <segment title="Inception Resnet v2"/>
                                         </segments>
                                     </segmentedControl>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XDx-CZ-UWz">
-                                        <rect key="frame" x="0.0" y="74" width="375" height="205"/>
+                                        <rect key="frame" x="0.0" y="74" width="355" height="205"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hotdog or Not hotdog" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EFM-oG-XgD">
-                                        <rect key="frame" x="0.0" y="322" width="375" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="322" width="355" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="13" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Taz-1Z-fS0">
-                                        <rect key="frame" x="0.0" y="385.5" width="375" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="385.5" width="355" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="2" minValue="1" maxValue="5" translatesAutoresizingMaskIntoConstraints="NO" id="NDB-60-YLS">
-                                        <rect key="frame" x="-2" y="449" width="379" height="31"/>
+                                        <rect key="frame" x="-2" y="449" width="359" height="31"/>
                                         <connections>
                                             <action selector="epochSlider:" destination="V7X-jh-Zvk" eventType="valueChanged" id="o9b-dL-ozl"/>
                                         </connections>
                                     </slider>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Ne8-Nm-jzd">
-                                        <rect key="frame" x="0.0" y="522" width="375" height="31"/>
+                                        <rect key="frame" x="0.0" y="522" width="355" height="31"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BBM-1i-9tx">
-                                                <rect key="frame" x="0.0" y="0.0" width="177.5" height="31"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="167.5" height="31"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="tinted" title="hotdog"/>
                                                 <connections>
@@ -63,7 +63,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jFw-96-VPp">
-                                                <rect key="frame" x="197.5" y="0.0" width="177.5" height="31"/>
+                                                <rect key="frame" x="187.5" y="0.0" width="167.5" height="31"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="gray" title="not hotdog"/>
                                                 <connections>
@@ -73,10 +73,10 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="wK6-p6-mM0">
-                                        <rect key="frame" x="0.0" y="596" width="375" height="31"/>
+                                        <rect key="frame" x="0.0" y="596" width="355" height="31"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jrk-h5-9IQ">
-                                                <rect key="frame" x="0.0" y="0.0" width="111.5" height="31"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="105" height="31"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="tinted" title="predict"/>
                                                 <connections>
@@ -84,7 +84,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gNN-nm-3yh">
-                                                <rect key="frame" x="131.5" y="0.0" width="112" height="31"/>
+                                                <rect key="frame" x="125" y="0.0" width="105" height="31"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="tinted" title="train"/>
                                                 <connections>
@@ -92,7 +92,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xdU-Se-RRY">
-                                                <rect key="frame" x="263.5" y="0.0" width="111.5" height="31"/>
+                                                <rect key="frame" x="250" y="0.0" width="105" height="31"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="gray" title="reset"/>
                                                 <connections>
@@ -106,10 +106,10 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="4Bv-Mx-F43" firstAttribute="top" secondItem="mZf-kb-bAY" secondAttribute="bottom" constant="20" id="Dtn-ZM-TTf"/>
-                            <constraint firstItem="6uO-tB-x5Y" firstAttribute="top" secondItem="4Bv-Mx-F43" secondAttribute="bottom" constant="20" id="bTG-xH-JeP"/>
-                            <constraint firstItem="4Bv-Mx-F43" firstAttribute="leading" secondItem="0EH-sP-3hx" secondAttribute="leading" id="osf-Wl-2k9"/>
-                            <constraint firstAttribute="trailing" secondItem="4Bv-Mx-F43" secondAttribute="trailing" id="yO2-bU-VLQ"/>
+                            <constraint firstItem="6uO-tB-x5Y" firstAttribute="top" secondItem="4Bv-Mx-F43" secondAttribute="bottom" constant="20" id="2vV-mL-fZw"/>
+                            <constraint firstAttribute="trailing" secondItem="4Bv-Mx-F43" secondAttribute="trailing" constant="10" id="DZL-O6-ueE"/>
+                            <constraint firstItem="4Bv-Mx-F43" firstAttribute="leading" secondItem="0EH-sP-3hx" secondAttribute="leading" constant="10" id="biM-jQ-BZ3"/>
+                            <constraint firstItem="4Bv-Mx-F43" firstAttribute="top" secondItem="mZf-kb-bAY" secondAttribute="bottom" constant="20" id="kpn-dK-G7c"/>
                         </constraints>
                     </view>
                     <connections>
