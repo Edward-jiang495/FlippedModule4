@@ -1,12 +1,12 @@
-#!/usr/bin/python
+# #!/usr/bin/python
 
 
-from pymongo import MongoClient
+# from pymongo import MongoClient
 
-client = MongoClient()
+# client = MongoClient()
 
-db=client.exampledatabase
-collect1 = db.queries
+# db=client.exampledatabase
+# collect1 = db.queries
 
-for document in collect1.find():
-	print document
+# for document in collect1.find():
+# 	print document

@@ -149,7 +149,7 @@ def get_model(model_type: ModelType, pretrain_type: PretrainType) -> keras.Model
 
 
 def train_user_model(model: keras.Model, pretrain_type: PretrainType, images: path, epochs=5) -> tuple:
-    if not os.listdir(images):
+    if not len(os.listdir(images)):
         print(f"No images found in {images}")
         return None, None
 
